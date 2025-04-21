@@ -2,25 +2,10 @@
 import './App.css';
 
 import React, { useState, useEffect } from 'react';
-import { Button, Card, CardContent, Typography, TextField, Modal, Box, Select, MenuItem, IconButton } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import 'bootstrap/dist/css/bootstrap.min.css';
-
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  boxShadow: 24,
-  p: 4,
-  borderRadius: 2,
-};
 
 function App() {
   const [tasks, setTasks] = useState([]);
-  const [open, setOpen] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [newTask, setNewTask] = useState({
     title: '',
     description: '',
@@ -52,7 +37,7 @@ function App() {
         body: JSON.stringify(newTask)
       });
       if (response.ok) {
-        setOpen(false);
+        setShowModal(false);
         setNewTask({ title: '', description: '', dueDateTime: '', status: 'PENDING' });
         await fetchTasks();
       }
@@ -94,100 +79,112 @@ function App() {
       <div className="container mt-5">
         <div className="d-flex justify-content-between align-items-center mb-4">
           <h1>Task Management System</h1>
-          <Button variant="contained" color="primary" onClick={() => setOpen(true)}>
+          <button
+              className="btn btn-primary"
+              onClick={() => setShowModal(true)}
+          >
             Add New Task
-          </Button>
+          </button>
         </div>
 
-        <Modal open={open} onClose={() => setOpen(false)}>
-          <Box sx={style}>
-            <form onSubmit={handleCreateTask}>
-              <TextField
-                  fullWidth
-                  label="Title"
-                  variant="outlined"
-                  value={newTask.title}
-                  onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
-                  required
-                  className="mb-3"
-              />
-              <TextField
-                  fullWidth
-                  label="Description"
-                  variant="outlined"
-                  multiline
-                  rows={3}
-                  value={newTask.description}
-                  onChange={(e) => setNewTask({ ...newTask, description: e.target.value })}
-                  className="mb-3"
-              />
-              <TextField
-                  fullWidth
-                  type="datetime-local"
-                  label="Due Date & Time"
-                  variant="outlined"
-                  InputLabelProps={{ shrink: true }}
-                  value={newTask.dueDateTime}
-                  onChange={(e) => setNewTask({ ...newTask, dueDateTime: e.target.value })}
-                  required
-                  className="mb-3"
-              />
-              <Button type="submit" variant="contained" color="primary" fullWidth>
-                Create Task
-              </Button>
-            </form>
-          </Box>
-        </Modal>
+        {/* Modal */}
+        <div className={`modal ${showModal ? 'd-block' : 'd-none'}`} tabIndex="-1">
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Create New Task</h5>
+                <button
+                    type="button"
+                    className="btn-close"
+                    onClick={() => setShowModal(false)}
+                ></button>
+              </div>
+              <div className="modal-body">
+                <form onSubmit={handleCreateTask}>
+                  <div className="mb-3">
+                    <label className="form-label">Title</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        value={newTask.title}
+                        onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
+                        required
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label className="form-label">Description</label>
+                    <textarea
+                        className="form-control"
+                        rows="3"
+                        value={newTask.description}
+                        onChange={(e) => setNewTask({ ...newTask, description: e.target.value })}
+                    ></textarea>
+                  </div>
+                  <div className="mb-3">
+                    <label className="form-label">Due Date & Time</label>
+                    <input
+                        type="datetime-local"
+                        className="form-control"
+                        value={newTask.dueDateTime}
+                        onChange={(e) => setNewTask({ ...newTask, dueDateTime: e.target.value })}
+                        required
+                    />
+                  </div>
+                  <button type="submit" className="btn btn-primary w-100">
+                    Create Task
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <div className="row">
           {tasks.map((task) => (
               <div className="col-md-4 mb-4" key={task.id}>
-                <Card
-                    className={`shadow-sm ${selectedTask === task.id ? 'border-primary' : ''}`}
+                <div
+                    className={`card shadow-sm ${selectedTask === task.id ? 'border-primary' : ''}`}
                     onClick={() => setSelectedTask(task.id)}
                     style={{ cursor: 'pointer' }}
                 >
-                  <CardContent>
+                  <div className="card-body">
                     <div className="d-flex justify-content-between align-items-start">
-                      <Typography variant="h5" component="div">
-                        {task.title}
-                      </Typography>
+                      <h5 className="card-title">{task.title}</h5>
                       {selectedTask === task.id && (
-                          <IconButton
-                              aria-label="delete"
+                          <button
+                              className="btn btn-danger btn-sm"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 handleDeleteTask(task.id);
                               }}
-                              color="error"
                           >
-                            <DeleteIcon />
-                          </IconButton>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash" viewBox="0 0 16 16">
+                              <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                              <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                            </svg>
+                          </button>
                       )}
                     </div>
 
-                    <Typography variant="body2" color="text.secondary" className="my-2">
-                      {task.description}
-                    </Typography>
+                    {task.description && (
+                        <p className="card-text text-muted my-2">{task.description}</p>
+                    )}
 
-                    <Typography variant="caption" display="block" gutterBottom>
+                    <p className="card-text text-muted small mb-2">
                       Due: {new Date(task.dueDateTime).toLocaleString()}
-                    </Typography>
+                    </p>
 
-                    <Select
-                        fullWidth
+                    <select
+                        className="form-select form-select-sm mt-2"
                         value={task.status}
                         onChange={(e) => handleStatusChange(task.id, e.target.value)}
-                        variant="outlined"
-                        size="small"
-                        className="mt-2"
                     >
-                      <MenuItem value="PENDING">Pending</MenuItem>
-                      <MenuItem value="IN_PROGRESS">In Progress</MenuItem>
-                      <MenuItem value="COMPLETED">Completed</MenuItem>
-                    </Select>
-                  </CardContent>
-                </Card>
+                      <option value="PENDING">Pending</option>
+                      <option value="IN_PROGRESS">In Progress</option>
+                      <option value="COMPLETED">Completed</option>
+                    </select>
+                  </div>
+                </div>
               </div>
           ))}
         </div>
