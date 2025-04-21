@@ -9,8 +9,6 @@
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
     "@svgr/webpack": "^5.5.0",
     "@testing-library/dom": "^10.4.0",
-    "@testing-library/jest-dom": "^6.6.3",
-    "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^13.5.0",
     "babel-jest": "^27.4.2",
     "babel-loader": "^8.2.3",
@@ -62,7 +60,7 @@
     "workbox-webpack-plugin": "^6.4.1"
   },
   "scripts": {
-    "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
+    "start": "concurreantly \"npm run start:backend\" \"npm run start:frontend\"",
     "start:backend": "cd ../../../../../ && mvn spring-boot:run",
     "start:frontend": "node scripts/start.js",
     "build": "node scripts/build.js",
@@ -141,5 +139,11 @@
     "presets": [
       "react-app"
     ]
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
+    "jest-environment-jsdom": "^29.7.0"
   }
 }
