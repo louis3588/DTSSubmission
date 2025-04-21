@@ -1,0 +1,94 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 18px;
+  color: #333;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-container {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 600px;
+  position: relative;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: #666;
+}
+
+.close-btn:hover {
+  color: #333;
+}
+
+.task-card {
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+  cursor: pointer;
+  background: #bbbbff;
+}
+
+.task-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.task-card.selected {
+  border-color: #666;
+  background-color: #f8f9fa;
+}
+
+.form-control, .form-select {
+  border: 2px solid #ddd;
+  padding: 0.75rem;
+  font-size: 1rem;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: #666;
+  box-shadow: none;
+}
+
+.btn-dark {
+  background-color: #01019a;
+  color: #f8f9fa;
+  border: none;
+}
+
+.btn-dark:hover {
+  background-color: #444;
+}
+
+.btn-danger {
+  font-size: 0.9rem;
+  padding: 0.25rem 0.75rem;
+}
+
+.text-muted {
+  color: #666;
+}
