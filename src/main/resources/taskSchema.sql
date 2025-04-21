@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `taskTracker`.`task` (
   `title` VARCHAR(140) NOT NULL,
   `description` VARCHAR(560) NULL,
   `status` VARCHAR(45) NOT NULL,
-  `dueDateTime` DATETIME NOT NULL,
+  `dueDateTime` DATETIME NOT NULL DEFAULT '2100-01-01 00:00:00',
   PRIMARY KEY (`id`),
   UNIQUE INDEX `taskId_UNIQUE` (`id` ASC) VISIBLE)
 ENGINE = InnoDB;
