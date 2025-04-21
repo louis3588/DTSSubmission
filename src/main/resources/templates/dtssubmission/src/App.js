@@ -13,6 +13,7 @@ function App() {
     status: 'PENDING'
   });
   const [selectedTask, setSelectedTask] = useState(null);
+  const [dateError, setDateError] = useState('');
 
   useEffect(() => {
     fetchTasks();
@@ -30,6 +31,15 @@ function App() {
 
   const handleCreateTask = async (e) => {
     e.preventDefault();
+    const selectedDate = new Date(newTask.dueDateTime);
+    const now = new Date();
+
+    if (selectedDate <= now) {
+      setDateError('Please enter a due date that is in the future');
+      return;
+    }
+
+    setDateError('');
     try {
       const response = await fetch('http://localhost:8080/api/tasks', {
         method: 'POST',
@@ -82,7 +92,9 @@ function App() {
           <button
               className="btn btn-dark py-2 px-4 fw-bold rounded-3"
               style={{ fontSize: '1.1rem' }}
-              onClick={() => setShowModal(true)}
+              onClick={() => {
+                  setShowModal(true);
+                  setDateError("")}}
           >
             + Add New Task
           </button>
@@ -130,6 +142,7 @@ function App() {
                         onChange={(e) => setNewTask({ ...newTask, dueDateTime: e.target.value })}
                         required
                     />
+                    {dateError && <div className="text-danger mt-2">{dateError}</div>}
                   </div>
                   <button
                       type="submit"
