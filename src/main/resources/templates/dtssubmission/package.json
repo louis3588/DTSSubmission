@@ -60,7 +60,7 @@
     "workbox-webpack-plugin": "^6.4.1"
   },
   "scripts": {
-    "start": "concurreantly \"npm run start:backend\" \"npm run start:frontend\"",
+    "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
     "start:backend": "cd ../../../../../ && mvn spring-boot:run",
     "start:frontend": "node scripts/start.js",
     "build": "node scripts/build.js",
